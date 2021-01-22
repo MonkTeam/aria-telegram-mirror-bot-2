@@ -54,13 +54,13 @@ export async function driveClone(fileId: string, bot: TelegramBot, cloneMsg: Tel
                         throw new Error(err);
                     }
                 } else {
-                    message += `\n\nRuko zara sabar karo...`;
+                    message += `\n\nPlease wait...`;
                     msgTools.editMessage(bot, cloneMsg, message);
                     //copy file
                     await copy_file(meta.data.id, constants.GDRIVE_PARENT_DIR_ID).then((new_file: any) => {
                         if (new_file) {
                             let msg: string;
-                            message += `\n\nYo boi copy is done getting shareable link...`;
+                            message += `\n\nYour copy is ready, getting shareable link...`;
                             msgTools.editMessage(bot, cloneMsg, message);
                             gdrive.getSharableLink(new_file.id, false, (err, url) => {
                                 if (err) {
@@ -75,7 +75,7 @@ export async function driveClone(fileId: string, bot: TelegramBot, cloneMsg: Tel
                                 resolve(msg);
                             });
                         } else {
-                            reject('No file found after copy');
+                            reject('File not found after copy');
                         }
                     }).catch(e => {
                         reject(e.message || e);
@@ -83,7 +83,7 @@ export async function driveClone(fileId: string, bot: TelegramBot, cloneMsg: Tel
 
                 }
             }).catch((error: Error) => {
-                reject(error.message + `\n\nEither it is not a Shareable Link or something went wrong while fetching files metadata`);
+                reject(error.message + `\n\nEither it's not a Shareable Link or something went wrong while fetching files metadata`);
             });
         }).catch(reject);
 
